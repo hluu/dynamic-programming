@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+group 'org.personal'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group:'org.testng', name:'testng', version:'6.9.9'
+    testCompile group: 'org.testng', name: 'testng', version: '6.9.9'
+}
+
+test {
+    useTestNG()
+}
