@@ -38,11 +38,11 @@ public class LIS {
     public static void main(String[] args) {
         System.out.println(LIS.class.getName());
 
-        test(new int[] {10, 22, 9, 33, 21, 50, 41, 60, 80}, 6);
-       /* test(new int[] {5,4,3,2,1}, 1);
-        test(new int[] {1,2,3,4,5}, 5);
+        //test(new int[] {10, 22, 9, 33, 21, 50, 41, 60, 80}, 6);
         test(new int[] {50, 3, 10, 7, 40, 80}, 4);
-        test(new int[] {3, 10, 2, 1, 20}, 3);
+        /*test(new int[] {3, 10, 2, 1, 20}, 3);
+        test(new int[] {5,4,3,2,1}, 1);
+        test(new int[] {1,2,3,4,5}, 5);
         test(new int[] {10,9,2,5,3,7,101,18}, 4);
 
         test(new int[] {4,10,4,3,8,9}, 3);*/
@@ -72,18 +72,23 @@ public class LIS {
         printCallCount("topDown with memoize");
 
 
-        int actual3 = bottomUp(arr);
+        int actual3 = bottomUpDP(arr);
         printCallCount("bottom up");
 
 
-        System.out.printf("-- expected: %d, actual1: %d, actual2: %d, actual3: %d\n",
-                expected, actual1, actual2, actual3);
+        int actual5 = dpWithBinarySearch(arr);
+
+        System.out.printf("-- expected: %d, actual1: %d, actual2: %d, actual3: %d, actual5: %d\n",
+                expected, actual1, actual2, actual3, actual5);
 
         Assert.assertEquals(expected, actual1);
         Assert.assertEquals(expected, actual2);
         Assert.assertEquals(expected, actual3);
         Assert.assertEquals(expected, actual4);
+        Assert.assertEquals(expected, actual5);
     }
+
+
     private static int callCount = 0;
 
     /**
@@ -95,6 +100,7 @@ public class LIS {
      *   value is greater than the previous value, meaning extend the LIS
      *
      * Runtime: O(2^n)
+     * Space: O(n) - depth of the tree
      *
      *
      * @param arr
@@ -124,16 +130,28 @@ public class LIS {
 
 
     /**
+     *
      * This approach is a translation of the recurrence below using recursion
      *  - LIS(i) = 1 + max (LIS(j))
      *  - for all j from 0 to i - 1 and arr[j] < arr[i]
+     *
+     * The intuition is if you are standing at position i and look back at all the
+     * number before you, you see many increasing subsequences, therefore you want to find
+     * the ones that you can be part of or can extend that subsequence and among those,
+     * find the one with maximum length.
+     *
+     *
+     *  LIS[i] = 1 + max(LIS[j]) for all  0<=j<i and A[j]<A[i]
+     *         = 1 if no such element exists where j< i and A[j]<A[i]
+     *
      *
      * Only +1 for the max of all the LIS(j) for j from 0 to i-1
      *
      * - need to keep track of the max among each of the index
      * - need to keep track of the max among all the previous indexes when at index i
      *
-     * What is the runtime O(n) = ??
+     * What is the runtime O(n) = n^2
+     * Space: O(n)
      *
      * @param arr
      * @param idx
@@ -214,12 +232,21 @@ public class LIS {
     }
 
     /**
+     *
+     * Imagine there is an array keeps track of the LIS of all the elements from 0 to i.
+     *      * If we have that information, can we calculate LIS(i+1)?
+     *      * - starting at i+1, we go back until 0 and extend the LIS(i) by 1 if the value
+     *      *   at num[i+1] > num[j] for (j from i to 0
+     *
      * Build a table of LIS(j).
+     *
+     * Runtime: O(n^2)
+     * Space: O(n) - size of the cache
      *
      * @param arr
      * @return
      */
-    private static int bottomUp(int[] arr) {
+    private static int bottomUpDP(int[] arr) {
         int[] cache = new int[arr.length];
         Arrays.fill(cache, 1);
 
@@ -283,5 +310,60 @@ public class LIS {
                 prefix, callCount);
 
         callCount = 0;
+    }
+
+
+    /**
+     * https://leetcode.com/articles/longest-increasing-subsequence/?page=3
+     * https://algorithmsandme.com/longest-increasing-subsequence-in-onlogn/
+     *
+     * Good one to read
+     * https://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
+     *
+     * - iterate from left to right of an array of size of nums -  call LIS array
+     * - build the LIS array in increasing order
+     *
+     * @param nums
+     * @return
+     */
+    private static int dpWithBinarySearch(int[] nums) {
+        // Add boundary case, when array size is one
+
+        int[] tailTable = new int[nums.length];
+        int len; // always points empty slot
+
+        tailTable[0] = nums[0];
+        len = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] < tailTable[0])
+                // new smallest value
+                tailTable[0] = nums[i];
+
+            else if (nums[i] > tailTable[len - 1])
+                // A[i] wants to extend largest subsequence
+                tailTable[len++] = nums[i];
+
+            else
+                // A[i] wants to be current end candidate of an existing
+                // subsequence. It will replace ceil value in tailTable
+                tailTable[CeilIndex(tailTable, -1, len - 1, nums[i])] = nums[i];
+        }
+
+        return len;
+    }
+
+    // Binary search (note boundaries in the caller)
+    // A[] is ceilIndex in the caller
+    private static int CeilIndex(int A[], int l, int r, int key)
+    {
+        while (r - l > 1) {
+            int m = l + (r - l) / 2;
+            if (A[m] >= key)
+                r = m;
+            else
+                l = m;
+        }
+
+        return r;
     }
 }
