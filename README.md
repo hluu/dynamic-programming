@@ -1,2 +1,4 @@
-# dynamic-programming
-Master Dynamic Programming
+A collection of Dynamic Programming problems
+
+
+#### Resources
