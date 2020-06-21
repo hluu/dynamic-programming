@@ -1,12 +1,14 @@
+package org.learning.dp;
+
 import org.testng.Assert;
 
-import javax.xml.bind.SchemaOutputResolver;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 
 /**
- * Classic Fibonacci sequence:
+ * Classic org.learning.dp.Fibonacci sequence:
  *
  * f(n) = f(n-1) + f(n-2) for n > 2 else n
  *

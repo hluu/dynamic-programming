@@ -1,3 +1,5 @@
+package org.learning.dp;
+
 import org.testng.Assert;
 
 import java.util.Arrays;
@@ -27,7 +29,7 @@ import java.util.stream.IntStream;
  */
 public class PartitionEqualSubset {
     public static void main(String[] args) {
-        System.out.println("PartitionEqualSubset.main");
+        System.out.println("org.learning.dp.PartitionEqualSubset.main");
 
         test(new int[] {1,5,11,5}, true);
         test(new int[] {1,2,3,5}, false);

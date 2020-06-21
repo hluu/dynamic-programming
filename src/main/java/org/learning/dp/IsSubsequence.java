@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+package org.learning.dp;
 
 /**
  * Given a string s and a string t, check if s is subsequence of t.

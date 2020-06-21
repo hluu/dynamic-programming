@@ -1,3 +1,5 @@
+package org.learning.dp;
+
 import org.testng.Assert;
 
 import java.util.ArrayList;
@@ -14,12 +16,12 @@ import java.util.List;
  *      - there are O(2^n) subsequences in X if its length is n
  *      - total runtime O(2^n * m) m is length of Y
  *  - Recursive decomposition
- *      - assuming there is an LCS(i,j) at i,j
- *          - if character at X(i) == Y(j) then LCS(i,j) = 1 + LCS(i-1, j-1)
+ *      - assuming there is an org.learning.dp.LCS(i,j) at i,j
+ *          - if character at X(i) == Y(j) then org.learning.dp.LCS(i,j) = 1 + org.learning.dp.LCS(i-1, j-1)
  *          - if character at X(i) != Y(j) then there are 2 choices
- *            - LCS(i-1, j) and LCS(i, j-1)
+ *            - org.learning.dp.LCS(i-1, j) and org.learning.dp.LCS(i, j-1)
  *            - since we don't know which one is longer therefore
- *            - LCS(i,j) = max{LCS(i-1, j), LCS(i, j-1)}
+ *            - org.learning.dp.LCS(i,j) = max{org.learning.dp.LCS(i-1, j), org.learning.dp.LCS(i, j-1)}
  *
  */
 public class LCS {
@@ -152,7 +154,7 @@ public class LCS {
         List<Character> collector = new ArrayList<>();
         collectChar(x, metadata, collector, x.length(), y.length());
 
-        System.out.println("LCS: " + collector);
+        System.out.println("org.learning.dp.LCS: " + collector);
 
         return cache[x.length()][y.length()];
     }

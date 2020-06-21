@@ -1,3 +1,5 @@
+package org.learning.dp;
+
 import org.junit.Assert;
 
 import java.util.ArrayList;
@@ -24,13 +26,13 @@ import java.util.List;
  *  - input: [-1, 3, 4, 5, 2, 2, 2]
  *           [ 1, 2, 3, 4, 2, 2, 2]
  *
- *  - what are the choices that we have to make for LIS(i)?
- *    - essentially all the LIS of all the digits before i
+ *  - what are the choices that we have to make for org.learning.dp.LIS(i)?
+ *    - essentially all the org.learning.dp.LIS of all the digits before i
  *    - this is an implicit selection
  *
- *  - assuming we have LIS(i) at index i in the array
+ *  - assuming we have org.learning.dp.LIS(i) at index i in the array
  *  - can we extend the increase subsequence among all the previous values up to i
- *  - we get here by LIS(i) = 1 + max (LIS(i-1))
+ *  - we get here by org.learning.dp.LIS(i) = 1 + max (org.learning.dp.LIS(i-1))
  *    - for all j from 0 to i - 1 and arr[j] < arr[i]
  *
  */
@@ -97,7 +99,7 @@ public class LIS {
      * - and get the max of two
      *
      * - the constraint here is only select the value at idx only when its
-     *   value is greater than the previous value, meaning extend the LIS
+     *   value is greater than the previous value, meaning extend the org.learning.dp.LIS
      *
      * Runtime: O(2^n)
      * Space: O(n) - depth of the tree
@@ -132,7 +134,7 @@ public class LIS {
     /**
      *
      * This approach is a translation of the recurrence below using recursion
-     *  - LIS(i) = 1 + max (LIS(j))
+     *  - org.learning.dp.LIS(i) = 1 + max (org.learning.dp.LIS(j))
      *  - for all j from 0 to i - 1 and arr[j] < arr[i]
      *
      * The intuition is if you are standing at position i and look back at all the
@@ -141,11 +143,11 @@ public class LIS {
      * find the one with maximum length.
      *
      *
-     *  LIS[i] = 1 + max(LIS[j]) for all  0<=j<i and A[j]<A[i]
+     *  org.learning.dp.LIS[i] = 1 + max(org.learning.dp.LIS[j]) for all  0<=j<i and A[j]<A[i]
      *         = 1 if no such element exists where j< i and A[j]<A[i]
      *
      *
-     * Only +1 for the max of all the LIS(j) for j from 0 to i-1
+     * Only +1 for the max of all the org.learning.dp.LIS(j) for j from 0 to i-1
      *
      * - need to keep track of the max among each of the index
      * - need to keep track of the max among all the previous indexes when at index i
@@ -188,10 +190,10 @@ public class LIS {
      * This approach is a translation of the recurrence below using recursion
      * and add the memoization
      *
-     *  - LIS(i) = 1 + max (LIS(j))
+     *  - org.learning.dp.LIS(i) = 1 + max (org.learning.dp.LIS(j))
      *  - for all j from 0 to i - 1 and arr[j] < arr[i]
      *
-     * Only +1 for the max of all the LIS(j) for j from 0 to i-1
+     * Only +1 for the max of all the org.learning.dp.LIS(j) for j from 0 to i-1
      *
      * - need to keep track of the max among each of the index
      * - need to keep track of the max among all the previous indexes when at index i
@@ -233,12 +235,12 @@ public class LIS {
 
     /**
      *
-     * Imagine there is an array keeps track of the LIS of all the elements from 0 to i.
-     *      * If we have that information, can we calculate LIS(i+1)?
-     *      * - starting at i+1, we go back until 0 and extend the LIS(i) by 1 if the value
+     * Imagine there is an array keeps track of the org.learning.dp.LIS of all the elements from 0 to i.
+     *      * If we have that information, can we calculate org.learning.dp.LIS(i+1)?
+     *      * - starting at i+1, we go back until 0 and extend the org.learning.dp.LIS(i) by 1 if the value
      *      *   at num[i+1] > num[j] for (j from i to 0
      *
-     * Build a table of LIS(j).
+     * Build a table of org.learning.dp.LIS(j).
      *
      * Runtime: O(n^2)
      * Space: O(n) - size of the cache
@@ -253,7 +255,7 @@ public class LIS {
         int[] subSeqTrail = new int[arr.length];
         Arrays.fill(subSeqTrail, -1);
 
-        // start from 1 because LIS(0) = 1;
+        // start from 1 because org.learning.dp.LIS(0) = 1;
 
         for (int idx = 1; idx < arr.length; idx++) {
             // from 0 to idx-1;
@@ -320,8 +322,8 @@ public class LIS {
      * Good one to read
      * https://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
      *
-     * - iterate from left to right of an array of size of nums -  call LIS array
-     * - build the LIS array in increasing order
+     * - iterate from left to right of an array of size of nums -  call org.learning.dp.LIS array
+     * - build the org.learning.dp.LIS array in increasing order
      *
      * @param nums
      * @return
