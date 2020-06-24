@@ -46,12 +46,14 @@ public class ClimbStairs {
 
         int actual = bruteForce(stairs, 0);
         int actual2 = topDownMem(stairs, 0, new int[stairs]);
+        int actual3 = bottomUp(stairs);
 
-        System.out.printf("expected: %d, actual: %d, actual2: %d\n",
-                expected, actual, actual2);
+        System.out.printf("expected: %d, actual: %d, actual2: %d, actual3: %d\n",
+                expected, actual, actual2, actual3);
 
         Assert.assertEquals(expected, actual);
         Assert.assertEquals(expected, actual2);
+        Assert.assertEquals(expected, actual3);
     }
 
 
@@ -85,5 +87,19 @@ public class ClimbStairs {
                 topDownMem(numSteps, currentStep+2, cache);
 
         return cache[currentStep];
+    }
+
+    private static int bottomUp(int numSteps)  {
+        int[] table = new int[numSteps+1];
+
+        table[0] = 0;
+        table[1] = 1;
+        table[2] = 2;
+
+        for (int step = 3; step <= numSteps; step++) {
+            table[step] = table[step-1] + table[step-2];
+        }
+
+        return table[numSteps];
     }
 }

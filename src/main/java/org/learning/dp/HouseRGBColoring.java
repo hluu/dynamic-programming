@@ -14,8 +14,8 @@ import java.util.Arrays;
  *      1   2   3   4   5
  *      =================
  * R 	2	2	6	4	2
- * G	  	0	5	7	1	1
- * B		1	1	2	0	4
+ * G	0	5	7	1	1
+ * B	1	1	2	0	4
  *
  * Approach:
  *  Base and build
@@ -23,7 +23,8 @@ import java.util.Arrays;
  *    {  2
  *       0
  *       1
- *        }
+ *    }
+ *
  *    Then the solution is just the min of the cost
  *
  *  What if there are only 2 houses -
@@ -35,6 +36,9 @@ import java.util.Arrays;
  *  High level approach:
  *  1) To figure out the minimum cost
  *  2) Sum them up and provide final sum
+ *
+ *  What is the recurrence?
+ *    f(h,c) = ???
  *
  * @author hluu
  *
@@ -74,7 +78,6 @@ public class HouseRGBColoring {
         System.out.println("minSoFar: " + Arrays.toString(minSoFar));
 
         for (int i = 1; i < numCol; i++) {
-
             for (int j = 0; j < numRow; j++) {
                 int minValue = Integer.MAX_VALUE;
                 for (int k = 0; k < numRow; k++) {
