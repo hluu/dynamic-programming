@@ -21,7 +21,7 @@ import java.util.Arrays;
  *
  * f[i] = cost[i] + min(f[i+1], f[i+2])
  *
- *
+ * https://leetcode.com/problems/min-cost-climbing-stairs/
  */
 public class MinCostClimbStairs {
     public static void main(String[] args) {
@@ -73,7 +73,7 @@ public class MinCostClimbStairs {
         System.out.printf("\ntest: n = %s\n", Arrays.toString(n));
 
         int actual1 = bruteForce(n);
-        int actual2 = bruteForceDP(n);
+        int actual2 = bottomUpOptimizedDP(n);
         int actual3 = bottomUp(n);
 
         System.out.printf("expected: %d, actual: %d, actual2: %d, actual3: %d\n",
@@ -122,7 +122,7 @@ public class MinCostClimbStairs {
      * @param cost
      * @return
      */
-    private static int bruteForceDP(int[] cost) {
+    private static int bottomUpOptimizedDP(int[] cost) {
         int oneStep = cost[0];
         int twoStep = cost[1];
 
@@ -135,6 +135,23 @@ public class MinCostClimbStairs {
         return Math.min(oneStep, twoStep);
     }
 
+    /**
+     * Bottom up approach analysis:
+     * - assuming that we have the min cost for the cells before the last cell
+     * - when we are at the last cell, the min cost would be the cost of that cell
+     * - plus the minimum of the cost from either the previous cell or previous-previous cell
+     *
+     * f(n) = return the minimum cost
+     * f[i] = cost[i] + min(f[i+1], f[i+2])
+     *
+     * The number of subproblems: O(n)
+     *
+     * T(n) = O(n)
+     * S(n) = O(n)
+     *
+     * @param cost
+     * @return
+     */
     private static int bottomUp(int[] cost) {
        int[] cache = new int[cost.length];
 
