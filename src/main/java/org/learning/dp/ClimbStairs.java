@@ -35,6 +35,8 @@ public class ClimbStairs {
                     numSteps, bruteForce(numSteps, 0));
         }
 
+        test(0,0);
+        test(1,1);
         test(2,2);
         test(3,3);
         test(4,5);
@@ -58,6 +60,9 @@ public class ClimbStairs {
 
 
     private static int bruteForce(int numSteps, int currentStep) {
+        if (numSteps < 3) {
+            return numSteps;
+        }
         if (currentStep == numSteps) {
             return 1;
         }
@@ -71,6 +76,10 @@ public class ClimbStairs {
     }
 
     private static int topDownMem(int numSteps, int currentStep, int[] cache) {
+        if (numSteps < 3) {
+            return numSteps;
+        }
+
         if (currentStep == numSteps) {
             return 1;
         }
@@ -90,16 +99,17 @@ public class ClimbStairs {
     }
 
     private static int bottomUp(int numSteps)  {
+        if (numSteps < 3) {
+            return numSteps;
+        }
         int[] table = new int[numSteps+1];
 
-        table[0] = 0;
         table[1] = 1;
         table[2] = 2;
 
         for (int step = 3; step <= numSteps; step++) {
             table[step] = table[step-1] + table[step-2];
         }
-
         return table[numSteps];
     }
 }

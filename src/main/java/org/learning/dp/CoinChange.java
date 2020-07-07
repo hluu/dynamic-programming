@@ -1,5 +1,7 @@
 package org.learning.dp;
 
+import org.testng.Assert;
+
 import java.util.Arrays;
 
 
@@ -24,18 +26,25 @@ import java.util.Arrays;
 public class CoinChange {
 
     public static void main(String[] args) {
-        int[] denominations = {1,3,4,};
-        int amount = 6;
 
-        System.out.println("denominations: " + Arrays.toString(denominations));
-        System.out.printf("min coins for amount %d is %d\n", amount,
-                coinChange(amount, denominations));
-        // i = 5
-        // j = 0
-        // minSoFar = 2
-        //   0 1 2 3 4 5
-        // d[0,1,2,1,2,m]
 
+        test(6, new int[] {1,3,4}, 2);
+        test(0, new int[] {1,3,4}, 0);
+        test(10, new int[] {1,5,7}, 2);
+        test(8, new int[] {1,5,7}, 2);
+        test(11, new int[] {1,5,7}, 3);
+        test(12, new int[] {1,5,7}, 2);
+
+    }
+
+    private static void test(int amount, int[] coins, int expected) {
+        System.out.printf("\namount: %d, coins: %s\n", amount, Arrays.toString(coins));
+
+        int actual = coinChange(amount, coins);
+
+        System.out.printf("expected: %d, actual: %d\n", expected, actual);
+
+        Assert.assertEquals(actual, expected);
     }
 
     public static int coinChange(int amount, int[] denominations) {
