@@ -137,4 +137,14 @@ public class PartitionEqualSubset {
                 canPartitionBFHelper(input, idx+1, sumSoFar + input[idx],
                         targetSum);
     }
+
+    /**
+     * @TODO - try this out
+     *
+     * @param input
+     * @return
+     */
+    private static boolean bottomUp(int[] input) {
+        return true;
+    }
 }

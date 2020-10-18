@@ -37,14 +37,23 @@ import java.util.Arrays;
 public class CountScoreCombination {
 
     public static void main(String[] args) {
-        int[] playScores = {2,3,7};
+        //int[] playScores = {2,3,7};
+        int[] playScores = {3,2,7};
 
         test(playScores, 12, 4);
         test(playScores, 10, 3);
+        test(playScores, 9, 3);
+
+        int[] playScores2 = {1,2,5};
+        test(playScores2, 5, 4);
+
+        int[] playScores3 = {3};
+        test(playScores3, 2, 0);
+
     }
 
     private static void test(int[] playScores, int score, int expected) {
-        System.out.printf("playScores: %s, score: %d\n", Arrays.toString(playScores), score);
+        System.out.printf("\nplayScores: %s, score: %d\n", Arrays.toString(playScores), score);
 
         int actual = countScoreCombo(playScores, score);
         int actual2 = countScoreRecursion(playScores, 0, score);
@@ -56,24 +65,26 @@ public class CountScoreCombination {
     }
 
     /**
-     * This version uses the bottom up approach and using a 1-d array to keep track of the combinations
+     * This version uses the bottom up approach and using a 1-d array to keep track of the combinations.
+     *
+     * It explores the number of combinations for each play score.
      *
      * @param playScores
-     * @param score
+     * @param totalScore
      * @return
      */
-    private static int countScoreCombo(int[] playScores, int score) {
-        int combo[] = new int[score+1];
+    private static int countScoreCombo(int[] playScores, int totalScore) {
+        int combo[] = new int[totalScore+1];
         combo[0] = 1;  // there is 1 combination for 0 score
         for (int i = 0; i < playScores.length; i++) {
             int playScore = playScores[i];
-            System.out.println("PlayScore: " + playScore);
-            for (int j = playScore; j <= score; j++) {
-                combo[j] += combo[j-playScore];
-                System.out.println("j: " + j + "\t" + Arrays.toString(combo));
+            for (int score = playScore; score <= totalScore; score++) {
+                combo[score] = combo[score] + combo[score-playScore];
+
             }
+            System.out.println("playScore: " + playScore + "\t" + Arrays.toString(combo));
         }
-        return combo[score];
+        return combo[totalScore];
     }
 
     /**
@@ -88,7 +99,7 @@ public class CountScoreCombination {
      * @return
      */
     private static int countScoreRecursion(int[] playScores, int idx,  int score) {
-        System.out.printf("idx: %d, score: %d\n", idx, score);
+        //System.out.printf("idx: %d, score: %d\n", idx, score);
         if (score == 0) {
             return 1;
         }
