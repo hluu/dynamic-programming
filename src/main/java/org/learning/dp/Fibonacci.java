@@ -51,6 +51,11 @@ public class Fibonacci {
 
         Assert.assertEquals(fibValue1, fibValue2);
         Assert.assertEquals(fibValue1, fibValue3);
+
+        System.out.println("--------- fibTopDown ------");
+
+        long fibTopDownRActual = fibTopDownDriver(n);
+        System.out.printf("n: %d, fibTopDownRActual: %d\n", n, fibTopDownRActual);
     }
 
     public static long fibRecursion(int n, int level) {
@@ -104,6 +109,25 @@ public class Fibonacci {
         return cache[n];
     }
 
+    private static long fibTopDownDriver(int n) {
+        long[] cache = new long[n+1];
+        Arrays.fill(cache, NO_CACHE);
+        fibTopDown(n, cache);
+        return cache[n];
+    }
+    private static long fibTopDown(int n, long[] cache) {
+        if (n <= 1) {
+            return n;
+        }
+
+        if (cache[n] !=  NO_CACHE) {
+            return cache[n];
+        }
+
+        cache[n] = fibTopDown(n-1, cache) + fibTopDown(n-2, cache);
+        return cache[n];
+    }
+
     private static long fibBottomup(int n) {
         if (n == 0) return 0;
 
@@ -111,7 +135,6 @@ public class Fibonacci {
         cache[0] = 0;
         cache[1] = 1;
 
-        // filling cache from the bottom up
         for (int i = 2; i <= n; i++) {
             cache[i] = cache[i-1] + cache[i-2];
         }
