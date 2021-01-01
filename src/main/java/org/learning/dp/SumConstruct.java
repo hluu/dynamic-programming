@@ -13,6 +13,8 @@ import java.util.*;
  * This class contains both top and bottom up implementations of the
  * above variations.
  *
+ * This the Java adaptation of the JavaScript implementation of a great video from freeCodeCamp.org
+ * - https://www.youtube.com/watch?v=oBt53YbR9Kk&t=13073s
  *
  */
 public class SumConstruct {
