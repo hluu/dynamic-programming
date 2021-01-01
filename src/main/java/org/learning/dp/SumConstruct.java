@@ -42,7 +42,8 @@ public class SumConstruct {
         testBestSum(7, new int[] {2,4}, null);
         testBestSum(8, new int[] {2,3,5}, Arrays.asList(3,5));
         testBestSum(20, new int[] {1,2,5,10}, Arrays.asList(10, 10));
-        testBestSum(100, new int[] {1,2,5,25}, Arrays.asList(25,25,25,25));
+        testBestSum(50, new int[] {25,1,2,5,25, 30, 36}, Arrays.asList(25,25));
+        //testBestSum(100, new int[] {1,2,5,25, 30, 36}, Arrays.asList(25,25,25,25));
     }
 
     private static void testBestSum(int targetSum, int[] inputs, List<Integer> expected) {
@@ -52,7 +53,11 @@ public class SumConstruct {
         List<Integer> actualTopDown = bestSumTopDown(targetSum, inputs, new HashMap<>());
         System.out.printf("expected: %s, actualTopDown: %s\n", expected, actualTopDown);
 
+        List<Integer> actualBottomUp = bestSumBottomUp(targetSum, inputs);
+        System.out.printf("expected: %s, actualBottomUp: %s\n", expected, actualBottomUp);
+
     }
+
     private static void testHowSum(int targetSum, int[] inputs, List<Integer> expected) {
         System.out.println("========== testHowSum ==========");
         System.out.printf("targetSum: %d, input: %s\n", targetSum, Arrays.toString(inputs));
@@ -155,6 +160,16 @@ public class SumConstruct {
         return cache[targetSum];
     }
 
+    /**
+     * Return an array containing any combination of elements
+     * that add up to exactly the targetSum.  Return null if no
+     * such combination.
+     *
+     * @param targetSum
+     * @param inputs
+     * @param cache
+     * @return
+     */
     private static List<Integer> howSumToDown(int targetSum, int[] inputs, Map<Integer, List<Integer>> cache) {
         if (cache.containsKey(targetSum)) {
             return cache.get(targetSum);
@@ -179,6 +194,15 @@ public class SumConstruct {
         return list;
     }
 
+    /**
+     * Return an array containing any combination of elements
+     * that add up to exactly the targetSum.  Return null if no
+     * such combination.
+     *
+     * @param targetSum
+     * @param inputs
+     * @return List<Integer>
+     */
     private static List<Integer> howSumBottomUp(int targetSum, int[] inputs) {
         List<Integer>[] cache = new List[targetSum+1];
         cache[0] = new ArrayList<>();
@@ -223,5 +247,40 @@ public class SumConstruct {
         }
         cache.put(targetSum, list);
         return list;
+    }
+
+    /**
+     * Bottom up approach to best sum, which is a slight variation of t he howSumBottomUp, where
+     * we pick the shortest list for each of the targetSum from 1..targetSum
+     *
+     * @param targetSum
+     * @param inputs
+     * @return
+     */
+    private static List<Integer> bestSumBottomUp(int targetSum, int[] inputs) {
+        List<Integer>[] cache = new List[targetSum+1];
+        cache[0] = new ArrayList<>();
+
+        for (int i = 1; i <= targetSum; i++) {
+            List<Integer> list = null; // list == null is when first time through the loop
+            for (int val : inputs) {
+                if ((i >= val) && cache[i - val] != null) {
+                    List<Integer> prevList = cache[i-val];
+                    // only update list of prevList size is smaller than current list (when not null)
+                    if (list == null || (prevList.size() + 1) < list.size()) {
+                        List<Integer> newList = new ArrayList<>(prevList);
+                        newList.add(val);
+                        list = newList;
+                    }
+                }
+            }
+            cache[i] = list;
+        }
+        System.out.println("bestSumBottomUp cache");
+        int ts = 0;
+        for (List<Integer> list : cache) {
+            System.out.println(ts++ + ": " + list);
+        }
+        return cache[targetSum];
     }
 }
