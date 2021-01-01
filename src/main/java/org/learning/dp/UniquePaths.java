@@ -41,7 +41,10 @@ public class UniquePaths {
     public static void main(String[] args) {
         System.out.println(UniquePaths.class.getName());
 
+        test(1, 1, 1);
         test(3, 2, 3);
+        test(2, 3, 3);
+        test(3, 3, 6);
         test(3, 7, 28);
         test(1, 7, 1);
         test(7, 1, 1);
@@ -55,7 +58,7 @@ public class UniquePaths {
 
         int actual = bruteForce(row-1, col-1);
 
-        int actual2 = uniqPaths(row, col);
+        int actual2 = uniqPathsBottomUp(row, col);
 
         System.out.printf("expected: %d, actual: %d, actual2: %d\n",
                 expected, actual, actual2);
@@ -76,33 +79,36 @@ public class UniquePaths {
                 bruteForce( row, col-1);
     }
 
-    private static int numPaths(int i, int j) {
-        if (i == 0 || j == 0) { // includes the row 0 and col 0
-            return 1;
-        }
-        return numPaths(i - 1, j) + numPaths(i, j - 1);
-    }
-
-    private static int uniqPaths(int m, int n) {
-        int[][] table = new int[m][n];
+    /**
+     * The bottom up approach uses 2-d array to keep track of the paths
+     *            go down     go to the right
+     * f(n,m) = f(n-1, m) + f(n, m-1)
+     * - base case when either m or n is 1, then there is only one path
+     *
+     * @param m
+     * @param n
+     * @return
+     */
+    private static int uniqPathsBottomUp(int m, int n) {
+        int[][] table = new int[m+1][n+1];
 
         // first column
-        for (int row = 0; row < m; row++) {
-            table[row][0] = 1;
+        for (int row = 1; row <= m; row++) {
+            table[row][1] = 1;
         }
 
         // first row
-        for (int col = 0; col < n; col++) {
-            table[0][col] = 1;
+        for (int col = 1; col <= n; col++) {
+            table[1][col] = 1;
         }
 
-        for (int row = 1; row < m; row++) {
-            for (int col = 1; col < n; col++) {
+        for (int row = 2; row <= m; row++) {
+            for (int col = 2; col <= n; col++) {
                 table[row][col] = table[row-1][col] + table[row][col-1];
             }
         }
 
         ArrayUtils.printMatrix(table);
-        return table[m-1][n-1];
+        return table[m][n];
     }
 }
