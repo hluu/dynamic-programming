@@ -29,6 +29,12 @@ public class SumConstruct {
         testCanSum(100, new int[] {1,2,5,25}, true);
 
         System.out.println(" ===================");
+        testCountSum(7, new int[] {2,3}, 3);
+        testCountSum(7, new int[] {5,3,4,7}, 3);
+        testCountSum(7, new int[] {2,4}, 0);
+        testCountSum(8, new int[] {2,3,5}, 6);
+
+        System.out.println(" ===================");
         testHowSum(7, new int[] {2,3}, Arrays.asList(3,2,2));
         testHowSum(7, new int[] {5,3,4,7}, Arrays.asList(4,3));
         testHowSum(7, new int[] {2,4}, null);
@@ -44,6 +50,19 @@ public class SumConstruct {
         testBestSum(20, new int[] {1,2,5,10}, Arrays.asList(10, 10));
         testBestSum(50, new int[] {25,1,2,5,25, 30, 36}, Arrays.asList(25,25));
         //testBestSum(100, new int[] {1,2,5,25, 30, 36}, Arrays.asList(25,25,25,25));
+    }
+
+    private static void testCountSum(int targetSum, int[] inputs, int expected) {
+        System.out.println("========== testCountSum ==========");
+        System.out.printf("targetSum: %d, input: %s\n", targetSum, Arrays.toString(inputs));
+
+        int actualTopDown = countSumTopDown(targetSum, inputs, new HashMap<>());
+        System.out.printf("expected: %s, actualTopDown: %s\n", expected, actualTopDown);
+
+        Assert.assertEquals(expected, actualTopDown);
+        //List<Integer> actualBottomUp = bestSumBottomUp(targetSum, inputs);
+        //System.out.printf("expected: %s, actualBottomUp: %s\n", expected, actualBottomUp);
+
     }
 
     private static void testBestSum(int targetSum, int[] inputs, List<Integer> expected) {
@@ -120,6 +139,25 @@ public class SumConstruct {
         }
         cache.put(targetSum, false);
         return false;
+    }
+
+    private static int countSumTopDown(int targetSum, int[] inputs, Map<Integer, Integer> cache) {
+        if (cache.containsKey(targetSum)) {
+            return cache.get(targetSum);
+        }
+        if (targetSum == 0) {
+            return 1;
+        }
+        if (targetSum < 0) {
+            return 0;
+        }
+        int totalSum = 0;
+        for (int val : inputs) {
+            int remaining = targetSum-val;
+            totalSum += countSumTopDown(remaining, inputs, cache);
+        }
+        cache.put(targetSum, totalSum);
+        return totalSum;
     }
 
     /**
@@ -276,11 +314,13 @@ public class SumConstruct {
             }
             cache[i] = list;
         }
+
+        /*
         System.out.println("bestSumBottomUp cache");
         int ts = 0;
         for (List<Integer> list : cache) {
             System.out.println(ts++ + ": " + list);
-        }
+        }*/
         return cache[targetSum];
     }
 }
